@@ -51,3 +51,11 @@ export function renderProducts(products) {
 
   refs.productsList.innerHTML = markup;
 }
+
+export function showNotFound() {
+  refs.notFound.classList.add("not-found--visible");
+}
+
+export function hideNotFound() {
+  refs.notFound.classList.remove("not-found--visible");
+}
