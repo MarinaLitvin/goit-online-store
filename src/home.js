@@ -14,13 +14,30 @@ import {
 
 import {
   handleCategoryClick,
+  handleProductClick,
+  handleModalClick,
 } from "./js/handlers.js"
 
 import { refs } from "./js/refs.js";
  
 let currentPage = 1;
 
-refs.categoriesList.addEventListener("click", handleCategoryClick);
+// Category delegation
+refs.categoriesList.addEventListener(
+  "click",
+  handleCategoryClick);
+
+// Product delegation
+refs.productsList.addEventListener(
+  "click",
+  handleProductClick
+);
+
+// Modal events
+refs.modal.addEventListener(
+  "click",
+  handleModalClick
+);
 
 async function initHomePage() {
     try {

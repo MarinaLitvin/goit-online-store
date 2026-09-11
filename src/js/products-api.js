@@ -43,3 +43,10 @@ export async function getProductsByCategory(category, page) {
 
   return response.data;
 }
+
+// Get one product by ID
+export async function getProductById(id) {
+  const response = await axios.get(`${BASE_URL}/${id}`);
+
+  return response.data;
+}
