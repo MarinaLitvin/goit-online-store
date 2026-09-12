@@ -114,14 +114,25 @@ export function renderModalProduct(product) {
   `;
 }
 
-// Change text of the button
+// Change text of the buttons
 export function updateCartButton(isProductInCart) {
   refs.modalAddToCartButton.textContent = isProductInCart
     ? "Remove from Cart"
     : "Add to Cart";
 }
 
-// Number of products
+export function updateWishlistButton(isProductInWishlist) {
+  refs.wishlistButton.textContent =
+    isProductInWishlist
+      ? "Remove from Wishlist"
+      : "Add to Wishlist";
+}
+
+// Update number of products
 export function updateCartCount(count) {
   refs.cartCount.textContent = count;
+}
+
+export function updateWishlistCount(count) {
+  refs.wishlistCount.textContent = count;
 }

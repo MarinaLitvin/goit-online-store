@@ -15,6 +15,8 @@ import {
     renderModalProduct,
     updateCartButton,
     updateCartCount,
+    updateWishlistButton,
+    updateWishlistCount,
 } from "./render-function.js";
 
 import {
@@ -23,10 +25,12 @@ import {
 } from "./modal.js";
 
 import {
-  getCart,
   addToCart,
   removeFromCart,
+  addToWishlist,
+  removeFromWishlist,
   isInCart,
+  isInWishlist,
 } from "./storage.js";
 
 let currentCategory = "All";
@@ -100,6 +104,7 @@ export async function handleProductClick(event) {
     renderModalProduct(data);
     
     updateCartButton(isInCart(productId));
+    updateWishlistButton(isInWishlist(productId));
 
     openModal();
   } catch (error) {
@@ -118,9 +123,15 @@ export function handleModalClick(event) {
     return;
   }
     
-  // Click on Add/Remove button
+  // Click on Add/Remove buttons
   if (event.target.closest(".modal-product__btn--cart")) {
     handleCartButtonClick();
+    return;
+  }
+    
+  if (
+    event.target.closest(".modal-product__btn--wishlist")) {
+    handleWishlistButtonClick();
     return;
   }
 
@@ -227,5 +238,30 @@ export function handleCartButtonClick() {
 
     updateCartButton(true);
     updateCartCount(cart.length);
+  }
+}
+
+export function handleWishlistButtonClick() {
+  if (currentProductId === null) {
+    return;
+  }
+
+  const productIsInWishlist =
+    isInWishlist(currentProductId);
+
+  if (productIsInWishlist) {
+    const wishlist = removeFromWishlist(
+      currentProductId
+    );
+
+    updateWishlistButton(false);
+    updateWishlistCount(wishlist.length);
+  } else {
+    const wishlist = addToWishlist(
+      currentProductId
+    );
+
+    updateWishlistButton(true);
+    updateWishlistCount(wishlist.length);
   }
 }
