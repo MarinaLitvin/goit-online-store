@@ -10,15 +10,20 @@ import {
 import {
     renderCategories,
     renderProducts,
+    updateCartCount,
 } from "./js/render-function.js";
 
 import {
   handleCategoryClick,
   handleProductClick,
   handleModalClick,
+  handleSearchSubmit,
+  handleSearchClear,
 } from "./js/handlers.js"
 
 import { refs } from "./js/refs.js";
+
+import { getCart } from "./js/storage.js";
  
 let currentPage = 1;
 
@@ -37,6 +42,18 @@ refs.productsList.addEventListener(
 refs.modal.addEventListener(
   "click",
   handleModalClick
+);
+
+// Submit form
+refs.searchForm.addEventListener(
+  "submit",
+  handleSearchSubmit
+);
+
+// Clear form
+refs.searchClearButton.addEventListener(
+  "click",
+  handleSearchClear
 );
 
 async function initHomePage() {
@@ -60,6 +77,9 @@ async function initHomePage() {
 
     // Рендеримо товари
     renderProducts(data.products);
+    
+    // Кількість товарів у кошику
+    updateCartCount(getCart().length);
   } catch (error) {
     console.error(error);
 

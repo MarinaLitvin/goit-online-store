@@ -113,3 +113,15 @@ export function renderModalProduct(product) {
     </div>
   `;
 }
+
+// Change text of the button
+export function updateCartButton(isProductInCart) {
+  refs.modalAddToCartButton.textContent = isProductInCart
+    ? "Remove from Cart"
+    : "Add to Cart";
+}
+
+// Number of products
+export function updateCartCount(count) {
+  refs.cartCount.textContent = count;
+}

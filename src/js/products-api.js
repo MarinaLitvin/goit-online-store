@@ -50,3 +50,18 @@ export async function getProductById(id) {
 
   return response.data;
 }
+
+// Get products by search query
+export async function getProductsBySearch(query, page) {
+  const skip = (page - 1) * PRODUCTS_PER_PAGE;
+
+  const response = await axios.get(`${BASE_URL}/search`, {
+    params: {
+      q: query,
+      limit: PRODUCTS_PER_PAGE,
+      skip,
+    },
+  });
+
+  return response.data;
+}
