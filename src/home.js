@@ -12,6 +12,8 @@ import {
     renderProducts,
     updateCartCount,
     updateWishlistCount,
+    showLoader,
+    hideLoader,
 } from "./js/render-function.js";
 
 import {
@@ -61,7 +63,9 @@ refs.searchClearButton.addEventListener(
 );
 
 async function initHomePage() {
-    try {
+  showLoader();
+  
+  try {
       // Отримуємо категорії
     const categories = await getCategories();
         // Додаємо All на початок
@@ -91,6 +95,8 @@ async function initHomePage() {
     iziToast.error({
       message: "Something went wrong. Please try again!",
     });
+  } finally {
+    hideLoader();
   }
 }
 

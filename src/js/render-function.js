@@ -60,6 +60,14 @@ export function hideNotFound() {
   refs.notFound.classList.remove("not-found--visible");
 }
 
+export function showLoader() {
+  refs.loader.classList.add("is-visible");
+}
+
+export function hideLoader() {
+  refs.loader.classList.remove("is-visible");
+}
+
 // Render one product in modal
 export function renderModalProduct(product) {
   const {

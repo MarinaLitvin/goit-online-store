@@ -17,6 +17,8 @@ import {
     updateCartCount,
     updateWishlistButton,
     updateWishlistCount,
+    showLoader,
+    hideLoader,
 } from "./render-function.js";
 
 import {
@@ -59,8 +61,9 @@ export async function handleCategoryClick(event) {
 
   button.classList.add("categories__btn--active");
 
-  // Hide "No Products Found"
+  // Hide "No Products Found" & Show loader
   hideNotFound();
+  showLoader();
 
   try {
     let data;
@@ -84,6 +87,8 @@ export async function handleCategoryClick(event) {
     iziToast.error({
       message: "Something went wrong. Please try again!",
     });
+  } finally {
+    hideLoader();
   }
 }
 
@@ -97,6 +102,8 @@ export async function handleProductClick(event) {
   const productId = Number(product.dataset.id);
 
   currentProductId = productId;
+  
+  showLoader();
 
   try {
     const data = await getProductById(productId);
@@ -113,6 +120,8 @@ export async function handleProductClick(event) {
     iziToast.error({
       message: "Something went wrong. Please try again!",
     });
+  } finally {
+    hideLoader();
   }
 }
 
@@ -162,8 +171,9 @@ export async function handleSearchSubmit(event) {
   // Show clear button
   refs.searchClearButton.classList.add("is-visible");
 
-  // 6. Hide "No Products Found"
-  hideNotFound();
+  // 6. Hide "No Products Found" & show loader
+    hideNotFound();
+    showLoader();
 
   try {
     // 7. Request products by search query
@@ -187,6 +197,8 @@ export async function handleSearchSubmit(event) {
     iziToast.error({
       message: "Something went wrong. Please try again!",
     });
+  } finally {
+    hideLoader();
   }
 }
 

@@ -18,6 +18,8 @@ import {
   hideNotFound,
   updateCartCount,
   updateWishlistCount,
+  showLoader,
+  hideLoader,
 } from "./js/render-function.js";
 
 import {
@@ -46,7 +48,9 @@ refs.buyProductsButton.addEventListener(
 );
 
 async function initCartPage() {
-  try {
+    showLoader();
+    
+    try {
     // 1. Отримуємо ID товарів з localStorage
     const cartIds = getCart();    
     const wishlistIds = getWishlist();
@@ -90,6 +94,8 @@ async function initCartPage() {
     
     iziToast.error({
     message: "Something went wrong. Please try again!",});
+  } finally {
+    hideLoader();
   }
 }
 
