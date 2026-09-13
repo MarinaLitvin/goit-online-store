@@ -12,7 +12,7 @@ export const refs = {
   searchForm: document.querySelector(".search-form"),
   searchInput: document.querySelector(".search-form__input"),
   searchClearButton: document.querySelector(".search-form__btn-clear"),
-  
+
   modalAddToCartButton: document.querySelector(".modal-product__btn--cart"),
 
   wishlistButton: document.querySelector(".modal-product__btn--wishlist"),
@@ -21,5 +21,11 @@ export const refs = {
 
   itemsCount: document.querySelector("[data-count]"),
   totalPrice: document.querySelector("[data-price]"),
+  buyProductsButton: document.querySelector(".cart-summary__btn"),
+
+  itemsCount: document.querySelector(
+    "[data-count]"),
+  totalPrice: document.querySelector(
+    "[data-price]"),
   buyProductsButton: document.querySelector(".cart-summary__btn"),
 };

@@ -11,6 +11,7 @@ import {
     renderCategories,
     renderProducts,
     updateCartCount,
+    updateWishlistCount,
 } from "./js/render-function.js";
 
 import {
@@ -23,7 +24,10 @@ import {
 
 import { refs } from "./js/refs.js";
 
-import { getCart } from "./js/storage.js";
+import {
+  getCart,
+  getWishlist,
+ } from "./js/storage.js";
  
 let currentPage = 1;
 
@@ -78,8 +82,9 @@ async function initHomePage() {
     // Рендеримо товари
     renderProducts(data.products);
     
-    // Кількість товарів у кошику
+    // Кількість товарів у кошику & wishlist
     updateCartCount(getCart().length);
+    updateWishlistCount(getWishlist().length);
   } catch (error) {
     console.error(error);
 
