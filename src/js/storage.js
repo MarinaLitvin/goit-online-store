@@ -76,7 +76,7 @@ export function isInWishlist(id) {
 }
 
 export function getTheme() {
-    return JSON.parse(localStorage.getItem(LS_KEYS.theme))
+    return localStorage.getItem(LS_KEYS.theme);
 }
 
 export function saveTheme(theme) {
