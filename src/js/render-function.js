@@ -1,5 +1,11 @@
 import { refs } from "./refs.js";
 
+import {
+  hasMoreProducts,
+  createProductsMarkup,
+} from "./helpers.js";
+
+// Categories List markup
 export function renderCategories(categories) {
   const markup = categories
     .map(
@@ -19,53 +25,50 @@ export function renderCategories(categories) {
   refs.categoriesList.innerHTML = markup;
 }
 
+// Create Products List markup
 export function renderProducts(products) {
-  const markup = products
-    .map(
-      ({ id, thumbnail, title, brand, category, price }) => `
-        <li class="products__item" data-id="${id}">
-          <img
-            class="products__image"
-            src="${thumbnail}"
-            alt="${title}"
-          />
-
-          <p class="products__title">${title}</p>
-
-          <p class="products__brand">
-            <span class="products__brand--bold">Brand:</span>
-            ${brand ?? "Unknown"}
-          </p>
-
-          <p class="products__category">
-            Category: ${category}
-          </p>
-
-          <p class="products__price">
-            Price: $${price}
-          </p>
-        </li>
-      `
-    )
-    .join("");
-
-  refs.productsList.innerHTML = markup;
+  refs.productsList.innerHTML = createProductsMarkup(products);
 }
 
+// Add/Hide Load More button
+export function updateLoadMoreButton(currentPage, total) {
+  if (hasMoreProducts(currentPage, total)) {
+    showLoadMore();
+  } else {
+    hideLoadMore();
+  }
+}
+
+//Add to existing Products List markup
+export function appendProducts(products) {
+  refs.productsList.insertAdjacentHTML(
+    "beforeend",
+    createProductsMarkup(products)
+  );
+}
+
+// Show/Hide not_found block.
 export function showNotFound() {
   refs.notFound.classList.add("not-found--visible");
 }
-
 export function hideNotFound() {
   refs.notFound.classList.remove("not-found--visible");
 }
 
+// Show/Hide loader.
 export function showLoader() {
   refs.loader.classList.add("is-visible");
 }
-
 export function hideLoader() {
   refs.loader.classList.remove("is-visible");
+}
+
+// Show/Hide load-more button.
+export function showLoadMore() {
+  refs.loadMoreButton.classList.remove("is-hidden");
+}
+export function hideLoadMore() {
+  refs.loadMoreButton.classList.add("is-hidden");
 }
 
 // Render one product in modal

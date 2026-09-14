@@ -2,6 +2,8 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
+import { PRODUCTS_PER_PAGE } from "./js/constants.js";
+
 import {
     getCategories,
     getProducts,
@@ -14,6 +16,8 @@ import {
     updateWishlistCount,
     showLoader,
     hideLoader,
+    showLoadMore,
+    hideLoadMore,
 } from "./js/render-function.js";
 
 import {
@@ -22,6 +26,7 @@ import {
   handleModalClick,
   handleSearchSubmit,
   handleSearchClear,
+  handleLoadMore,
 } from "./js/handlers.js"
 
 import { refs } from "./js/refs.js";
@@ -29,19 +34,27 @@ import { refs } from "./js/refs.js";
 import {
   getCart,
   getWishlist,
- } from "./js/storage.js";
+} from "./js/storage.js";
+ 
+import { hasMoreProducts } from "./js/helpers.js";
  
 let currentPage = 1;
 
-// Category delegation
+// Choose Category (delegation).
 refs.categoriesList.addEventListener(
   "click",
   handleCategoryClick);
 
-// Product delegation
+// Choose Product (delegation).
 refs.productsList.addEventListener(
   "click",
   handleProductClick
+);
+
+// Load more products button.
+refs.loadMoreButton.addEventListener(
+  "click",
+  handleLoadMore
 );
 
 // Modal events
@@ -85,6 +98,19 @@ async function initHomePage() {
 
     // Рендеримо товари
     renderProducts(data.products);
+
+    // Показуємо/приховуємо loader залежно від є/немає товарів.
+    if (
+      hasMoreProducts(
+        currentPage,
+        PRODUCTS_PER_PAGE,
+        data.total
+      )
+    ) {
+      showLoadMore();
+    } else {
+      hideLoadMore();
+    }
     
     // Кількість товарів у кошику & wishlist
     updateCartCount(getCart().length);

@@ -6,9 +6,9 @@ import {
     getCart,
     getWishlist,
 } from "./js/storage.js";
+
 import {
   getProductsByIds,
-  calculateCartItems,
   calculateCartTotal,
 } from "./js/helpers.js";
 
@@ -84,7 +84,7 @@ async function initCartPage() {
 
     // 7. Кількість товарів
     refs.itemsCount.textContent =
-      calculateCartItems(products);
+      products.length;
 
     // 8. Загальна вартість
     refs.totalPrice.textContent =

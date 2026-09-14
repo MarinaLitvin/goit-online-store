@@ -2,11 +2,14 @@
 import iziToast from "izitoast";
 
 import { getProductById } from "./js/products-api.js";
+
 import {
     getWishlist,
     getCart,
- } from "./js/storage.js";
+} from "./js/storage.js";
+ 
 import { getProductsByIds } from "./js/helpers.js";
+
 import {
   renderProducts,
   showNotFound,

@@ -10,8 +10,11 @@ import {
 
 import {
     renderProducts,
+    updateLoadMoreButton,
+    appendProducts,
     showNotFound,
     hideNotFound,
+    hideLoadMore,
     renderModalProduct,
     updateCartButton,
     updateCartCount,
@@ -51,6 +54,11 @@ export async function handleCategoryClick(event) {
 
   currentCategory = category;
   currentPage = 1;
+  
+  // Clear the search
+  currentSearchQuery = "";
+  refs.searchInput.value = "";
+  refs.searchClearButton.classList.remove("is-visible");  
 
   // Active category
   document
@@ -76,11 +84,13 @@ export async function handleCategoryClick(event) {
 
     if (data.products.length === 0) {
       renderProducts([]);
+      hideLoadMore();
       showNotFound();
       return;
     }
 
     renderProducts(data.products);
+    updateLoadMoreButton(currentPage, data.total);
   } catch (error) {
     console.error(error);
 
@@ -125,6 +135,67 @@ export async function handleProductClick(event) {
   }
 }
 
+export async function handleLoadMore() {
+  const card =
+    refs.productsList.querySelector(".products__item");
+
+  const cardHeight =
+    card.getBoundingClientRect().height;
+
+    const nextPage = currentPage + 1;
+
+    showLoader();
+
+  try {
+    let data;
+
+    if (currentSearchQuery) {
+      data = await getProductsBySearch(
+        currentSearchQuery,
+        nextPage
+      );
+    } else if (currentCategory === "All") {
+      data = await getProducts(nextPage);
+    } else {
+      data = await getProductsByCategory(
+        currentCategory,
+        nextPage
+      );
+    }
+
+    if (data.products.length === 0) {
+      hideLoadMore();
+
+      iziToast.info({
+        message: "No more products available.",
+      });
+        
+      return;
+    }
+
+    appendProducts(data.products);
+    
+    currentPage = nextPage;
+
+    updateLoadMoreButton(currentPage, data.total);
+
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: "smooth",
+    });
+  } catch (error) {
+    console.error(error);
+
+    currentPage -= 1;
+
+    iziToast.error({
+      message: "Something went wrong. Please try again!",
+    });
+  } finally {
+    hideLoader();
+  }
+}
+
 export function handleModalClick(event) {
   // Click on close button
   if (event.target.closest(".modal__close-btn")) {
@@ -151,46 +222,53 @@ export function handleModalClick(event) {
 }
 
 export async function handleSearchSubmit(event) {
-  // 1. Prevent page reload
+  // Prevent page reload
   event.preventDefault();
 
-  // 2. Get search text and remove extra spaces
+  // Get search text and remove extra spaces
   const query = refs.searchInput.value.trim();
 
-  // 3. Do not send request for empty string or spaces
+  // Do not send request for empty string or spaces
   if (!query) {
     return;
   }
 
-  // 4. Start from the first page for every new search
+  // Start from the first page for every new search
   currentPage = 1;
 
-  // 5. Save current search query
+  // Save current search query
   currentSearchQuery = query;
+  
+  // Clear selected category
+  currentCategory = "All";
     
   // Show clear button
   refs.searchClearButton.classList.add("is-visible");
 
-  // 6. Hide "No Products Found" & show loader
+  // Hide "No Products Found" & show loader
     hideNotFound();
     showLoader();
 
   try {
-    // 7. Request products by search query
+    // Request products by search query
     const data = await getProductsBySearch(
       currentSearchQuery,
       currentPage
     );
 
-    // 8. Check if products were found
+    // Check if products were found
     if (data.products.length === 0) {
       renderProducts([]);
+      hideLoadMore();
       showNotFound();
       return;
     }
 
-    // 9. Render found products
+    // Render found products
     renderProducts(data.products);
+    
+    // Показати/сховати Load More button.
+    updateLoadMoreButton(currentPage, data.total);
   } catch (error) {
     console.error(error);
 
@@ -203,36 +281,43 @@ export async function handleSearchSubmit(event) {
 }
 
 export async function handleSearchClear() {
-  // 1. Clear search input
+  // Clear search input
   refs.searchInput.value = "";
   
   // Hide clear button
   refs.searchClearButton.classList.remove("is-visible");
 
-  // 2. Reset page
+  // Reset page
   currentPage = 1;
 
-  // 3. Reset search query
+  // Reset search query
   currentSearchQuery = "";
 
-  // 4. Hide "No Products Found"
+  // Hide "No Products Found" and show loader
   hideNotFound();
+  showLoader();
 
   try {
-    // 5. Get all products without filtering
+    // Get all products without filtering
     const data = await getProducts(currentPage);
 
-    // 6. Render products
+    // Render products
     renderProducts(data.products);
+    
+    // Load More button
+    updateLoadMoreButton(currentPage, data.total);
   } catch (error) {
     console.error(error);
 
     iziToast.error({
       message: "Something went wrong. Please try again!",
     });
+  } finally {
+    hideLoader();
   }
 }
 
+// Add/remove product to a card.
 export function handleCartButtonClick() {
   if (currentProductId === null) {
     return;
@@ -253,6 +338,7 @@ export function handleCartButtonClick() {
   }
 }
 
+// Add/remove product to a wishlist.
 export function handleWishlistButtonClick() {
   if (currentProductId === null) {
     return;
@@ -275,5 +361,24 @@ export function handleWishlistButtonClick() {
 
     updateWishlistButton(true);
     updateWishlistCount(wishlist.length);
+  }
+}
+
+export function handleScrollTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}
+
+export function handleWindowScroll() {
+  if (window.scrollY > 300) {
+    refs.scrollTopButton.classList.add(
+      "is-visible"
+    );
+  } else {
+    refs.scrollTopButton.classList.remove(
+      "is-visible"
+    );
   }
 }

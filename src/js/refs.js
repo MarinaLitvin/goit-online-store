@@ -10,6 +10,7 @@ export const refs = {
   modalProduct: document.querySelector(".modal-product"),
 
   loader: document.querySelector(".loader"),
+  scrollTopButton: document.querySelector(".scroll-top-btn"),
 
   searchForm: document.querySelector(".search-form"),
   searchInput: document.querySelector(".search-form__input"),
