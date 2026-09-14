@@ -74,3 +74,11 @@ export function isInWishlist(id) {
 
   return wishlist.includes(id);
 }
+
+export function getTheme() {
+    return JSON.parse(localStorage.getItem(LS_KEYS.theme))
+}
+
+export function saveTheme(theme) {
+  localStorage.setItem(LS_KEYS.theme, theme);
+}

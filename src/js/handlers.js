@@ -36,7 +36,15 @@ import {
   removeFromWishlist,
   isInCart,
   isInWishlist,
+  getTheme,
+  saveTheme,
 } from "./storage.js";
+
+import {
+  hasMoreProducts,
+  isDarkTheme,
+  setTheme,
+} from "./helpers.js";
 
 let currentCategory = "All";
 let currentPage = 1;
@@ -338,7 +346,7 @@ export function handleCartButtonClick() {
   }
 }
 
-// Add/remove product to a wishlist.
+// Add/remove product to/from a wishlist.
 export function handleWishlistButtonClick() {
   if (currentProductId === null) {
     return;
@@ -380,5 +388,23 @@ export function handleWindowScroll() {
     refs.scrollTopButton.classList.remove(
       "is-visible"
     );
+  }
+}
+
+export function handleThemeToggle() {
+  const newTheme = isDarkTheme()
+    ? "light"
+    : "dark";
+
+  setTheme(newTheme);
+  saveTheme(newTheme);
+}
+
+// Get initial theme from local storage
+export function initTheme() {
+  const savedTheme = getTheme();
+
+  if (savedTheme) {
+    setTheme(savedTheme);
   }
 }

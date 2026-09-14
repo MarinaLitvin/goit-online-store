@@ -2,7 +2,9 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
-import { PRODUCTS_PER_PAGE } from "./js/constants.js";
+import {
+  PRODUCTS_PER_PAGE,
+ } from "./js/constants.js";
 
 import {
     getCategories,
@@ -27,6 +29,8 @@ import {
   handleSearchSubmit,
   handleSearchClear,
   handleLoadMore,
+  initTheme,
+  handleThemeToggle,
 } from "./js/handlers.js"
 
 import { refs } from "./js/refs.js";
@@ -36,9 +40,19 @@ import {
   getWishlist,
 } from "./js/storage.js";
  
-import { hasMoreProducts } from "./js/helpers.js";
+import {
+  hasMoreProducts,
+ } from "./js/helpers.js";
  
 let currentPage = 1;
+
+initTheme();
+
+// Choose theme
+refs.themeToggleButton.addEventListener(
+  "click",
+  handleThemeToggle
+);
 
 // Choose Category (delegation).
 refs.categoriesList.addEventListener(
@@ -99,7 +113,7 @@ async function initHomePage() {
     // Рендеримо товари
     renderProducts(data.products);
 
-    // Показуємо/приховуємо loader залежно від є/немає товарів.
+    // Показуємо/приховуємо Load More залежно від є/немає товарів.
     if (
       hasMoreProducts(
         currentPage,

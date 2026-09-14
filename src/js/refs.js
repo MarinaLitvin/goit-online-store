@@ -25,4 +25,7 @@ export const refs = {
   itemsCount: document.querySelector("[data-count]"),
   totalPrice: document.querySelector("[data-price]"),
   buyProductsButton: document.querySelector(".cart-summary__btn"),
+  themeToggleButton: document.querySelector(
+  ".theme-toggle-btn"
+)
 };

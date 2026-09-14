@@ -7,4 +7,5 @@ export const PRODUCTS_PER_PAGE = 12;
 export const LS_KEYS = {
   wishlist: "wishlist",
   cart: "cart",
+  theme: "dark",
 };

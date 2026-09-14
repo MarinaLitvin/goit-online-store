@@ -4,7 +4,6 @@ export function getProductsByIds(ids, getProductById) {
   return Promise.all(ids.map(id => getProductById(id)));
 }
 
-// 
 export function createProductsMarkup(products) {
   return products
     .map(
@@ -50,4 +49,12 @@ export function hasMoreProducts(
   total
 ) {
   return currentPage * PRODUCTS_PER_PAGE < total;
+}
+
+// Check/set theme 
+export function isDarkTheme() {
+  return document.body.dataset.theme === "dark";
+}
+export function setTheme(theme) {
+  document.body.dataset.theme = theme;
 }

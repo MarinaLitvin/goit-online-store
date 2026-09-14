@@ -2,6 +2,7 @@
 import iziToast from "izitoast";
 
 import { getProductById } from "./js/products-api.js";
+
 import {
     getCart,
     getWishlist,
@@ -25,9 +26,20 @@ import {
 import {
   handleProductClick,
   handleModalClick,
+  handleThemeToggle,
+  initTheme,
 } from "./js/handlers.js";
 
 import { refs } from "./js/refs.js";
+
+// Початкова тема з local storage
+initTheme();
+
+// Перемикання теми dark/light
+refs.themeToggleButton.addEventListener(
+  "click",
+  handleThemeToggle
+);
 
 // Відкриття товару з Cart
 refs.productsList.addEventListener(
