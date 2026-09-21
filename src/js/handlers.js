@@ -41,7 +41,6 @@ import {
 } from "./storage.js";
 
 import {
-  hasMoreProducts,
   isDarkTheme,
   setTheme,
 } from "./helpers.js";
@@ -55,7 +54,7 @@ export async function handleCategoryClick(event) {
   const button = event.target.closest(".categories__btn");
 
   if (!button) {
-    return;
+  return;
   }
 
   const category = button.textContent.trim();
@@ -404,7 +403,7 @@ export function handleThemeToggle() {
 export function initTheme() {
   const savedTheme = getTheme();
 
-  if (savedTheme) {
+  if (savedTheme === "dark" || savedTheme === "light") {
     setTheme(savedTheme);
   }
 }

@@ -96,9 +96,9 @@ async function initHomePage() {
       // Отримуємо категорії
     const categories = await getCategories();
         // Додаємо All на початок
-    categories.unshift("All");
-        // Рендеримо категорії
-    renderCategories(categories);
+    // categories.unshift("All");
+        // Рендеримо категорії з додаванням "All"
+    renderCategories(["All", ...categories]);
     
         // Make All buttons active initially
     const allButton = refs.categoriesList.querySelector(
